@@ -19,9 +19,12 @@ namespace SnakeGameConsole
             //TODO: Game over screen
             //TODO: Menu screen, start, easy or hard etc
 
-            Console.SetWindowSize(60, 25);
+            //Console.SetWindowSize(60, 25);
             Console.CursorVisible = false;
-            Console.ForegroundColor = ConsoleColor.Green;
+            //Console.ForegroundColor = ConsoleColor.Green;
+
+            var game = new Game();
+            //game.Initialize();
 
             DrawScreen();
             while (_inPlay)
@@ -99,6 +102,7 @@ namespace SnakeGameConsole
             _length++;
             _score++;
             _foodPosition = null;
+            nextUpdate = DateTime.Now.AddMilliseconds(2000 / (_score + 1));
         }
 
         private static bool HasFood(ScreenPosition currentPosition)
@@ -133,41 +137,35 @@ namespace SnakeGameConsole
         {
             return new ScreenPosition
             {
-                Left = 0,
-                Top = 0
+                Left = 1,
+                Top = 2
             };
         }
 
         private static void DrawScreen()
         {
-            StringBuilder sceneBuilder = new StringBuilder();
-            for (int i = 0; i < Console.WindowHeight; i++)
+            Console.SetCursorPosition(0, 0);
+
+            var scene = new StringBuilder();
+            for (int i = 0; i < Console.WindowHeight - 1; i++)
             {
                 for (int j = 0; j < Console.WindowWidth; j++)
                 {
-
+                    if (_foodPosition?.Left == j && _foodPosition?.Top == i)
+                    {
+                        scene.Append("X");
+                    }
+                    else if (points.Any(p => p.Left == j && p.Top == i))
+                    {
+                        scene.Append("*");
+                    }
+                    else
+                    {
+                        scene.Append(" ");
+                    }
                 }
             }
-
-            //This causes screen to blink
-            Console.Clear();
-
-            Console.SetCursorPosition(Console.WindowWidth - 3, Console.WindowHeight - 1);
-            Console.Write(_score);
-
-            Console.ForegroundColor = ConsoleColor.Green;
-            foreach (var point in points)
-            {
-                Console.SetCursorPosition(point.Left, point.Top);
-                Console.Write('*');
-            }
-
-            Console.ForegroundColor = ConsoleColor.Red;
-            if (_foodPosition != null)
-            {
-                Console.SetCursorPosition(_foodPosition.Left, _foodPosition.Top);
-                Console.Write('X');
-            }
+            Console.Write(scene);
         }
 
         private static void CleanUp()
@@ -177,34 +175,35 @@ namespace SnakeGameConsole
                 points.Remove(points.First());
             }
         }
-
-        private static DateTime nextUpdate = DateTime.MinValue;
-        private static ScreenPosition _foodPosition = null;
-        private static Random _random = new Random();
+        
         private static bool UpdateGame()
         {
-            if (DateTime.Now < nextUpdate)
-            {
-                return false;
-            }
-
-            if (_foodPosition == null)
-            {
-                _foodPosition = new ScreenPosition
-                {
-                    Left = _random.Next(Console.WindowWidth),
-                    Top = _random.Next(Console.WindowHeight)
-                };
-            }
+            AddFood();
 
             if (_lastKey.HasValue)
             {
                 Move(_lastKey.Value);
             }
 
-            nextUpdate = DateTime.Now.AddMilliseconds(200 / (_score + 1));
-
             return true;
+        }
+
+        private static DateTime nextUpdate = DateTime.MinValue;
+        private static ScreenPosition _foodPosition = null;
+        private static Random _random = new Random();
+        private static void AddFood()
+        {
+            if (_foodPosition == null)
+            {
+                if (DateTime.Now > nextUpdate)
+                {
+                    _foodPosition = new ScreenPosition
+                    {
+                        Left = _random.Next(Console.WindowWidth),
+                        Top = _random.Next(Console.WindowHeight)
+                    };
+                }
+            }
         }
     }
 }
