@@ -6,9 +6,7 @@ namespace SnakeGameConsole.Models
 {
     public class BoardBoundary
     {
-        public int FromWidth { get; set; }
-        public int FromHeight { get; set; }
-        public int ToWidth { get; set; }
-        public int ToHeight { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
     }
 }

@@ -28,15 +28,16 @@ namespace SnakeGameConsole.Services
             //Console.SetWindowSize(GameConstants.ScreenWidth, GameConstants.ScreenHeight);
             //Console.ForegroundColor = ConsoleColor.Yellow;
 
-            return new Game
+            var game = new Game
             {
                 InPlay = true,
                 Score = 0,
                 NextFoodUpdate = DateTime.MinValue,
-                Settings = new BoardSettings
+                Settings = new GameSettings
                 {
-                    Width = Console.WindowWidth,
-                    Height = Console.WindowHeight
+                    TopBuffer = 1,
+                    ScreenWidth = 80,
+                    ScreenHeight = 40
                 },
                 Snake = new Snake(new ScreenPosition
                 {
@@ -44,6 +45,11 @@ namespace SnakeGameConsole.Services
                     Top = 2
                 })
             };
+
+            Console.SetWindowSize(game.Settings.ScreenWidth, game.Settings.ScreenHeight);
+            Console.SetBufferSize(game.Settings.ScreenWidth, game.Settings.ScreenHeight);
+
+            return game;
         }
 
         public void Tick(Game game)
@@ -81,17 +87,16 @@ namespace SnakeGameConsole.Services
             Console.SetCursorPosition(0, 0);
             var scene = new StringBuilder();
             Console.WriteLine("Score: " + game.Score);
-            Console.SetCursorPosition(0, 1);
 
-            for (int i = 1; i < Console.WindowHeight - 1; i++)
+            var topBuffer = game.Settings.TopBuffer;
+            var height = game.Settings.BoardHeight;
+            var width = game.Settings.BoardWidth;
+
+            for (int i = topBuffer; i <= height; i++)
             {
-                for (int j = 0; j < Console.WindowWidth; j++)
+                for (int j = 0; j <= width; j++)
                 {
-                    if (i == 1 || i == Console.WindowHeight - 2)
-                    {
-                        scene.Append("#");
-                    }
-                    else if (j == 0 || j == Console.WindowWidth - 2)
+                    if ((i == topBuffer || i == height) || (j == 0 || j == width))
                     {
                         scene.Append("#");
                     }
@@ -101,14 +106,16 @@ namespace SnakeGameConsole.Services
                     }
                     else if (snakeService.IsOnPosition(game.Snake, new ScreenPosition { Left = j, Top = i }))
                     {
-                        scene.Append("*");
+                        scene.Append("s");
                     }
                     else
                     {
                         scene.Append(" ");
                     }
                 }
+                scene.Append(Environment.NewLine);
             }
+
             Console.Write(scene);
         }
 

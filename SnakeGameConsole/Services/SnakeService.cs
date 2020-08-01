@@ -88,9 +88,9 @@ namespace SnakeGameConsole.Services
             var settings = game.Settings;
 
             return position.Top < 0
-                || position.Top > settings.Height
+                || position.Top > settings.BoardHeight
                 || position.Left < 0
-                || position.Left > settings.Width;
+                || position.Left > settings.BoardWidth;
         }
 
         public bool HasTailCrashed(Snake snake)
