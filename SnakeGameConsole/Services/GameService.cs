@@ -19,12 +19,21 @@ namespace SnakeGameConsole.Services
             this.boardService = boardService;
         }
 
+        public void ShowMainMenu()
+        {
+            Console.WriteLine("Snake Game");
+            Console.WriteLine("Press any key to start...");
+            Console.ReadKey();
+            Console.Clear();
+        }
+
         public Game Start()
         {
             //TODO: Game over screen
             //TODO: Menu screen, start, easy or hard etc
 
             Console.CursorVisible = false;
+            Console.OutputEncoding = Encoding.UTF8;
             //Console.SetWindowSize(GameConstants.ScreenWidth, GameConstants.ScreenHeight);
             //Console.ForegroundColor = ConsoleColor.Yellow;
 

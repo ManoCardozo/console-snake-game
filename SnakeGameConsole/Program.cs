@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using SnakeGameConsole.Interfaces;
-using SnakeGameConsole.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SnakeGameConsole
 {
@@ -11,6 +10,8 @@ namespace SnakeGameConsole
         {
             var serviceProvider = DependencyInjection.Setup();
             var gameService = serviceProvider.GetService<IGameService>();
+
+            gameService.ShowMainMenu();
 
             var game = gameService.Start();
 
