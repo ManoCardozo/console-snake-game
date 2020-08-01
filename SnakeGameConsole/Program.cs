@@ -12,7 +12,7 @@ namespace SnakeGameConsole
             var serviceProvider = DependencyInjection.Setup();
             var gameService = serviceProvider.GetService<IGameService>();
 
-            var game = gameService.Setup();
+            var game = gameService.Start();
 
             while (gameService.IsInPlay(game))
             {

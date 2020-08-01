@@ -19,7 +19,7 @@ namespace SnakeGameConsole.Services
             this.boardService = boardService;
         }
 
-        public Game Setup()
+        public Game Start()
         {
             //TODO: Game over screen
             //TODO: Menu screen, start, easy or hard etc

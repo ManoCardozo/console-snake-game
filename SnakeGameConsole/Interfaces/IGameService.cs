@@ -8,7 +8,7 @@ namespace SnakeGameConsole.Interfaces
         void GameOver(Game game);
         bool IsInPlay(Game game);
         void Render(Game game);
-        Game Setup();
+        Game Start();
         void Tick(Game game);
     }
 }
