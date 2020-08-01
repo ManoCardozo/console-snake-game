@@ -8,13 +8,15 @@ namespace SnakeGameConsole.Services
 {
     public class GameService : IGameService
     {
-        private ISnakeService snakeService;
-        private BoardService boardService;
+        private readonly ISnakeService snakeService;
+        private readonly IBoardService boardService;
 
-        public GameService(ISnakeService snakeService)
+        public GameService(
+            ISnakeService snakeService, 
+            IBoardService boardService)
         {
             this.snakeService = snakeService;
-            boardService = new BoardService();
+            this.boardService = boardService;
         }
 
         public Game Setup()
@@ -26,7 +28,22 @@ namespace SnakeGameConsole.Services
             //Console.SetWindowSize(GameConstants.ScreenWidth, GameConstants.ScreenHeight);
             //Console.ForegroundColor = ConsoleColor.Yellow;
 
-            return new Game();
+            return new Game
+            {
+                InPlay = true,
+                Score = 0,
+                NextFoodUpdate = DateTime.MinValue,
+                Settings = new BoardSettings
+                {
+                    Width = Console.WindowWidth,
+                    Height = Console.WindowHeight
+                },
+                Snake = new Snake(new ScreenPosition
+                {
+                    Left = 2,
+                    Top = 2
+                })
+            };
         }
 
         public void Tick(Game game)
