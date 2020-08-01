@@ -85,12 +85,11 @@ namespace SnakeGameConsole.Services
         public bool HasGoneOffScreen(Game game)
         {
             var position = game.Snake.CurrentPosition;
-            var settings = game.Settings;
 
-            return position.Top < 0
-                || position.Top > settings.BoardHeight
-                || position.Left < 0
-                || position.Left > settings.BoardWidth;
+            return position.Top <= game.Boundary.Top
+                || position.Top >= game.Boundary.Bottom
+                || position.Left <= game.Boundary.Left
+                || position.Left >= game.Boundary.Right;
         }
 
         public bool HasTailCrashed(Snake snake)

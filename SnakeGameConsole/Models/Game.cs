@@ -9,7 +9,7 @@ namespace SnakeGameConsole.Models
         public DateTime NextFoodUpdate { get; set; }
         public ScreenPosition FoodPosition { get; set; }
         public Snake Snake { get; set; }
-        public GameSettings Settings { get; set; }
+        public BoardBoundary Boundary { get; set; }
         public bool InPlay { get; set; }
     }
 }

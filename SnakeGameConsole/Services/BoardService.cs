@@ -14,8 +14,8 @@ namespace SnakeGameConsole.Services
             var random = new Random();
             game.FoodPosition = new ScreenPosition
             {
-                Left = random.Next(1, game.Settings.ScreenWidth - 1),
-                Top = random.Next(1, game.Settings.ScreenHeight - 1)
+                Left = random.Next(game.Boundary.Left + 1, game.Boundary.Right - 1),
+                Top = random.Next(game.Boundary.Top + 1, game.Boundary.Bottom - 1)
             };
         }
     }

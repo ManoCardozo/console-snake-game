@@ -33,21 +33,22 @@ namespace SnakeGameConsole.Services
                 InPlay = true,
                 Score = 0,
                 NextFoodUpdate = DateTime.MinValue,
-                Settings = new GameSettings
+                Boundary = new BoardBoundary
                 {
-                    TopBuffer = 1,
-                    ScreenWidth = 80,
-                    ScreenHeight = 40
+                    Left = 0,
+                    Right = 78,
+                    Top = 1,
+                    Bottom = 38
                 },
                 Snake = new Snake(new ScreenPosition
                 {
-                    Left = 2,
-                    Top = 2
+                    Left = 10,
+                    Top = 10
                 })
             };
 
-            Console.SetWindowSize(game.Settings.ScreenWidth, game.Settings.ScreenHeight);
-            Console.SetBufferSize(game.Settings.ScreenWidth, game.Settings.ScreenHeight);
+            Console.SetWindowSize(game.Boundary.Width, game.Boundary.Height);
+            Console.SetBufferSize(game.Boundary.Width, game.Boundary.Height);
 
             return game;
         }
@@ -86,17 +87,19 @@ namespace SnakeGameConsole.Services
         {
             Console.SetCursorPosition(0, 0);
             var scene = new StringBuilder();
-            Console.WriteLine("Score: " + game.Score);
+            scene.Append("Score: " + game.Score);
+            scene.Append(Environment.NewLine);
 
-            var topBuffer = game.Settings.TopBuffer;
-            var height = game.Settings.BoardHeight;
-            var width = game.Settings.BoardWidth;
+            var topBuffer = game.Boundary.Top;
+            var leftBuffer = game.Boundary.Left;
+            var height = game.Boundary.Bottom;
+            var width = game.Boundary.Right;
 
-            for (int i = topBuffer; i <= height; i++)
+            for (int i = topBuffer; i < game.Boundary.Height - 1; i++)
             {
-                for (int j = 0; j <= width; j++)
+                for (int j = 0; j < game.Boundary.Width - 1; j++)
                 {
-                    if ((i == topBuffer || i == height) || (j == 0 || j == width))
+                    if (i <= topBuffer || i >= height || j <= leftBuffer || j >= width)
                     {
                         scene.Append("#");
                     }
@@ -106,14 +109,18 @@ namespace SnakeGameConsole.Services
                     }
                     else if (snakeService.IsOnPosition(game.Snake, new ScreenPosition { Left = j, Top = i }))
                     {
-                        scene.Append("s");
+                        scene.Append("*");
                     }
                     else
                     {
                         scene.Append(" ");
-                    }
+                    }   
                 }
-                scene.Append(Environment.NewLine);
+
+                //if (i != game.Boundary.Height)
+                {
+                    scene.Append(Environment.NewLine);
+                }
             }
 
             Console.Write(scene);
@@ -127,6 +134,10 @@ namespace SnakeGameConsole.Services
             }
 
             game.LastKey = Console.ReadKey(true);
+            /*game.Boundary.Left++;
+            game.Boundary.Right--;
+            game.Boundary.Top++;
+            game.Boundary.Bottom--;*/
         }
 
         public bool IsInPlay(Game game)
