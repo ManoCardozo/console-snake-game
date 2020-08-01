@@ -1,5 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using SnakeGameConsole.Interfaces;
+using SnakeGameConsole.Services;
 
 namespace SnakeGameConsole
 {
@@ -7,27 +9,16 @@ namespace SnakeGameConsole
     {
         static async Task Main(string[] args)
         {
-            //TODO: Game over screen
-            //TODO: Menu screen, start, easy or hard etc
+            var serviceProvider = DependencyInjection.Setup();
+            var gameService = serviceProvider.GetService<IGameService>();
 
-            //Console.SetWindowSize(60, 25);
-            Console.CursorVisible = false;
-            //Console.ForegroundColor = ConsoleColor.Green;
+            var game = gameService.Setup();
 
-            var pos = new ScreenPosition
+            while (gameService.IsInPlay(game))
             {
-                Left = 2,
-                Top = 2
-            };
-
-            var snake = new Snake(pos);
-            var game = new Game(snake);
-
-            while (game.InPlay)
-            {
-                game.Tick();
-                //await Task.Delay(50);
-            }
+                gameService.Tick(game);
+                await Task.Delay(50);
+            }           
         }
     }
 }

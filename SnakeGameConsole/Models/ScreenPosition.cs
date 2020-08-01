@@ -1,4 +1,4 @@
-﻿namespace SnakeGameConsole
+﻿namespace SnakeGameConsole.Models
 {
     public class ScreenPosition
     {
