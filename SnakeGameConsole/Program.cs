@@ -9,11 +9,14 @@ namespace SnakeGameConsole
         static async Task Main(string[] args)
         {
             var serviceProvider = DependencyInjection.Setup();
+            var mainMenuService = serviceProvider.GetService<IMainMenuService>();
             var gameService = serviceProvider.GetService<IGameService>();
-
-            gameService.ShowMainMenu();
-
             var game = gameService.Start();
+
+            mainMenuService.ShowMenu(game);
+
+
+            
 
             while (gameService.IsInPlay(game))
             {

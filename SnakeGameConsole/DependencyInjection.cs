@@ -11,6 +11,7 @@ namespace SnakeGameConsole
             .AddSingleton<IGameService, GameService>()
             .AddSingleton<ISnakeService, SnakeService>()
             .AddSingleton<IBoardService, BoardService>()
+            .AddSingleton<IMainMenuService, MainMenuService>()
             .BuildServiceProvider();
     }
 }

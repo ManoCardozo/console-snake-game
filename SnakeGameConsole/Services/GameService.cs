@@ -19,14 +19,6 @@ namespace SnakeGameConsole.Services
             this.boardService = boardService;
         }
 
-        public void ShowMainMenu()
-        {
-            Console.WriteLine("Snake Game");
-            Console.WriteLine("Press any key to start...");
-            Console.ReadKey();
-            Console.Clear();
-        }
-
         public Game Start()
         {
             //TODO: Game over screen

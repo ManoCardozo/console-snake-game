@@ -4,7 +4,6 @@ namespace SnakeGameConsole.Interfaces
 {
     public interface IGameService
     {
-        void ShowMainMenu();
         Game Start();
         void Tick(Game game);
         void Render(Game game);
