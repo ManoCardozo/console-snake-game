@@ -15,9 +15,6 @@ namespace SnakeGameConsole
 
             mainMenuService.ShowMenu(game);
 
-
-            
-
             while (gameService.IsInPlay(game))
             {
                 gameService.Tick(game);
